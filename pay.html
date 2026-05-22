@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NAGA MC - Thanh Toán & Ủng Hộ Máy Chủ</title>
+    <link rel="icon" type="image/png" href="NBLRB.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- BIẾN MÀU SẮC ĐỒNG BỘ --- */
+        :root {
+            --primary-color: #8a2be2;
+            --primary-light: #b030b0;
+            --primary-gradient: linear-gradient(135deg, #7b1fa2 0%, #e91e63 100%);
+            --bg-dark: #121214;
+            --bg-card: #1a1a1e;
+            --bg-nav: rgba(18, 18, 20, 0.75);
+            --text-main: #f5f5f7;
+            --text-muted: #a1a1aa;
+            --font-sans: 'Inter', sans-serif;
+            --font-heading: 'Montserrat', sans-serif;
+        }
+
+        /* --- RESET & CẤU HÌNH CHUNG --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background-color: #16161a;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 15px 0;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: var(--font-heading);
+            font-weight: 900;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+        }
+
+        .nav-logo img {
+            height: 35px;
+            filter: drop-shadow(0px 3px 0px rgba(0,0,0,0.5));
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: color 0.3s ease;
+        }
+
+        .btn-back:hover {
+            color: #fff;
+        }
+
+        /* --- MAIN CONTENT --- */
+        .pay-wrapper {
+            padding: 60px 0;
+            flex-grow: 1;
+        }
+
+        .pay-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .pay-title h1 {
+            font-family: var(--font-heading);
+            font-weight: 900;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .pay-title p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        /* --- GRID BÀN THANH TOÁN --- */
+        .pay-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1.8fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        /* Cột bên trái: QR Code */
+        .qr-card {
+            background-color: var(--bg-card);
+            border: 4px solid #000;
+            box-shadow: 8px 8px 0px #000;
+            padding: 30px;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        .qr-container {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            display: inline-block;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            line-height: 0;
+        }
+
+        .qr-container img {
+            width: 230px;
+            height: 230px;
+            object-fit: cover;
+        }
+
+        .qr-hint {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        /* Cột bên phải: Thông tin & Cú pháp */
+        .info-card {
+            background-color: var(--bg-card);
+            border: 4px solid #000;
+            box-shadow: 8px 8px 0px #000;
+            padding: 40px;
+            border-radius: 4px;
+        }
+
+        .info-card h2 {
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px dashed #2d2d35;
+            padding-bottom: 15px;
+        }
+
+        .info-card h2 i {
+            color: var(--primary-light);
+        }
+
+        /* Hộp cú pháp sao chép */
+        .syntax-box {
+            background-color: #121214;
+            border: 2px solid #2d2d35;
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .syntax-content {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .syntax-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--primary-light);
+            letter-spacing: 1px;
+        }
+
+        .syntax-text {
+            font-family: var(--font-heading);
+            font-weight: 900;
+            font-size: 1.3rem;
+            color: #fff;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-copy-syntax {
+            background: #232329;
+            border: 2px solid #000;
+            box-shadow: 0 4px 0 #000;
+            color: #fff;
+            padding: 10px 18px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.1s ease;
+        }
+
+        .btn-copy-syntax:hover {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #000;
+            background: #2d2d35;
+        }
+
+        /* Chi tiết tài khoản dạng danh sách */
+        .details-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 35px;
+        }
+
+        .details-item {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 10px;
+        }
+
+        .details-item .label {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .details-item .value {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        /* Khối yêu cầu lưu ý */
+        .notes-box {
+            background: rgba(138, 43, 226, 0.05);
+            border-left: 4px solid var(--primary-color);
+            padding: 20px;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .notes-box h3 {
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            color: var(--primary-light);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .notes-box ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .notes-box ul li {
+            position: relative;
+            padding-left: 15px;
+        }
+
+        .notes-box ul li::before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        /* --- TOAST NOTIFICATION --- */
+        .toast {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2ecc71;
+            color: #fff;
+            padding: 15px 30px;
+            font-weight: 700;
+            border: 3px solid #000;
+            box-shadow: 0 6px 0 #000;
+            z-index: 2000;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .toast.show {
+            bottom: 40px;
+        }
+
+        /* --- FOOTER --- */
+        .footer {
+            background-color: #0b0b0d;
+            padding: 30px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .pay-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .pay-title h1 {
+                font-size: 2rem;
+            }
+            .info-card {
+                padding: 25px;
+            }
+            .syntax-box {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+                width: 100%;
+            }
+            .btn-copy-syntax {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="toast" class="toast">Đã sao chép cú pháp thành công!</div>
+
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="NBLRB.png" alt="NAGA MC Logo">
+                <span>NAGA MC</span>
+            </a>
+            <a href="index.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Quay lại Trang chủ</a>
+        </div>
+    </nav>
+
+    <main class="pay-wrapper">
+        <div class="container">
+            
+            <div class="pay-title">
+                <h1>Ủng Hộ Máy Chủ</h1>
+                <p>Mọi khoản đóng góp của bạn đều góp phần duy trì và phát triển hạ tầng NAGA MC bền vững.</p>
+            </div>
+
+            <div class="pay-grid">
+                
+                <div class="qr-card">
+                    <h2 style="font-family: var(--font-heading); font-size: 1.2rem; margin-bottom: 5px;">QUÉT MÃ QR</h2>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">Hỗ trợ mọi ứng dụng Ngân hàng & Ví điện tử</p>
+                    
+                    <div class="qr-container">
+                        <img src="https://api.vietqr.io/image/970436-1066272409-X4TNUS3.jpg?accountName=TRAN%20NGOC%20THIEN&amount=0&addInfo=NAGAMC%20" alt="Mã QR Chuyển Khoản">
+                    </div>
+                    
+                    <p class="qr-hint"><i class="fa-solid fa-qrcode"></i> Mở ứng dụng ngân hàng để quét mã tự động</p>
+                </div>
+
+                <div class="info-card">
+                    <h2><i class="fa-solid fa-receipt"></i> THÔNG TIN CHUYỂN KHOẢN</h2>
+                    
+                    <div class="syntax-box">
+                        <div class="syntax-content">
+                            <span class="syntax-label">NỘI DUNG CHUYỂN KHOẢN (CÚ PHÁP)</span>
+                            <span class="syntax-text" id="syntax-text">NAGAMC [Ten_In_Game]</span>
+                        </div>
+                        <button class="btn-copy-syntax" id="btn-copy">
+                            <i class="fa-solid fa-copy"></i> SAO CHÉP
+                        </button>
+                    </div>
+
+                    <div class="details-list">
+                        <div class="details-item">
+                            <span class="label">Ngân hàng</span>
+                            <span class="value">[Vietcombank]</span>
+                        </div>
+                        <div class="details-item">
+                            <span class="label">Số tài khoản</span>
+                            <span class="value">[1066272409]</span>
+                        </div>
+                        <div class="details-item">
+                            <span class="label">Chủ tài khoản</span>
+                            <span class="value">[TRAN NGOC THIEN]</span>
+                        </div>
+                    </div>
+
+                    <div class="notes-box">
+                        <h3><i class="fa-solid fa-circle-exclamation"></i> CÁC YÊU CẦU & LƯU Ý QUAN TRỌNG:</h3>
+                        <ul>
+                            <li><strong>Ghi đúng cú pháp:</strong> Vui lòng thay thế <code>[Ten_In_Game]</code> bằng chính xác tên nhân vật của bạn trong Minecraft để hệ thống tự động nhận diện.</li>
+                            <li><strong>Chụp lại biên lai:</strong> Giữ lại ảnh chụp màn hình giao dịch chuyển khoản thành công đề phòng trường hợp cần đối soát thủ công.</li>
+                            <li><strong>Thời gian xử lý:</strong> Hệ thống Vanilla duyệt quà tự động hoặc thủ công qua Discord trong vòng 5-15 phút sau khi nhận được tiền.</li>
+                            <li><strong>Hỗ trợ:</strong> Nếu quá 30 phút chưa nhận được gói, hãy gửi biên lai vào kênh hỗ trợ trên hệ thống Discord Server của NAGA MC để Admin hỗ trợ ngay.</li>
+                        </ul>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 NAGA MC. Thiết kế đồng bộ hệ thống máy chủ Vanilla.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('btn-copy').addEventListener('click', () => {
+            const textToCopy = "NAGAMC [Ten_In_Game]"; 
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const toast = document.getElementById('toast');
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }).catch(err => {
+                console.error('Lỗi sao chép cú pháp: ', err);
+            });
+        });
+    </script>
+</body>
+</html>
